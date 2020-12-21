@@ -1,6 +1,9 @@
 name: Node.js CI
 
-on: [push]
+on:
+  push:
+    branches:
+    - master
 
 jobs:
   build:
@@ -23,3 +26,14 @@ jobs:
         MONGODB_TEST_URI: ${{secrets.MONGODB_TEST_URI}}
         NODE_ENV: test
         SERVER_PORT_TEST: 3334
+    - name: Generate deployment package
+      run: zip -r deploy.zip . -x '*.git*'
+    - name: Deploy to EB
+      uses: einaregilsson/beanstalk-deploy@v14
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: survey_app
+        environment_name: SurveyApp-env
+        region: sa-east-1
+        deployment_package: deploy.zip
