@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import request from 'supertest';
 
 import config from '@config/config';
-import survey from '@models/survey';
+import Survey from '@models/survey';
 
 import app from '../app';
 
@@ -14,7 +14,7 @@ describe('Test survey endpoint', () => {
       .catch((err) => console.log(err.message));
   });
   afterEach(async (done) => {
-    await survey.deleteMany({});
+    await Survey.deleteMany({});
     mongoose
       .disconnect()
       .then(done())

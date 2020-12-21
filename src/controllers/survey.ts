@@ -11,7 +11,7 @@ const getAllSurveys = (req: Request, res: Response): void => {
     .catch((error) => res.status(500).json({ message: error.message, error }));
 };
 
-const createSurvey = (req: Request, res: Response) => {
+const createSurvey = (req: Request, res: Response): Response | Promise<Response> => {
   const questionSchema = Joi.object({
     title: Joi.string().required(),
     questionType: Joi.string().valid('MULTIPLE CHOICE', 'MULTIPLE SELECT', 'OPEN TEXT', 'YES OR NO'),

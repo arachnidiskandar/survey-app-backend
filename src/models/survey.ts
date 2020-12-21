@@ -1,4 +1,3 @@
-import { bool, boolean } from 'joi';
 import mongoose, { Schema } from 'mongoose';
 
 import ISurvey from '@interfaces/survey';
@@ -15,4 +14,4 @@ const SurveySchema: Schema = new Schema({
   availableToAnyone: { type: Boolean, required: true },
 });
 
-export default mongoose.model<ISurvey>('Survey', SurveySchema);
+export default mongoose.model<ISurvey>('survey', SurveySchema);

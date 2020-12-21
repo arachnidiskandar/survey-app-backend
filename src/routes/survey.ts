@@ -2,9 +2,9 @@ import express from 'express';
 
 import controller from '@controllers/survey';
 
-const router = express.Router();
+const surveyRoutes = express.Router();
 
-router.get('', controller.getAllSurveys);
-router.post('', controller.createSurvey);
+surveyRoutes.get('', controller.getAllSurveys);
+surveyRoutes.post('', controller.createSurvey);
 
-export { router };
+export default surveyRoutes;
