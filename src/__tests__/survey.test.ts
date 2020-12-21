@@ -25,7 +25,7 @@ describe('Test survey endpoint', () => {
     done();
   });
   it('should create new survey', async (done) => {
-    const survey = {
+    const surveyData = {
       title: 'Primeiro Formulário 2',
       coordinator: 1,
       questions: [
@@ -37,8 +37,8 @@ describe('Test survey endpoint', () => {
       ],
       availableToAnyone: true,
     };
-    const response = await request(app).post('/api/surveys').send(survey);
-    expect(response.body).toMatchObject(survey);
+    const response = await request(app).post('/api/surveys').send(surveyData);
+    expect(response.body).toMatchObject(surveyData);
     done();
   });
 });

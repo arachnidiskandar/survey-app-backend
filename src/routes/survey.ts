@@ -7,4 +7,4 @@ const router = express.Router();
 router.get('', controller.getAllSurveys);
 router.post('', controller.createSurvey);
 
-export = router;
+export { router };
