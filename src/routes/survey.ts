@@ -29,5 +29,6 @@ surveyRoutes.post(
   },
   controller.createSurvey
 );
+surveyRoutes.delete('/:id', controller.deleteSurvey);
 
 export default surveyRoutes;

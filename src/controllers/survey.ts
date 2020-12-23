@@ -27,7 +27,7 @@ const createSurvey = (req: Request, res: Response): void => {
 };
 
 const deleteSurvey = (req: Request, res: Response): void => {
-  const { id } = req.body;
+  const { id } = req.params;
 
   Survey.deleteOne({ _id: id })
     .then(() => res.status(204).json({}))
