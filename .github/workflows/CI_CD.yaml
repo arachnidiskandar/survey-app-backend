@@ -1,12 +1,9 @@
-name: CI/CD AWS EB
+name: CI/CD Heroku
 
 on:
   push:
     branches:
     - master
-env:
-  AZURE_WEBAPP_NAME: SurveyAppAugst  # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: '.'
 
 jobs:
   build:
@@ -29,9 +26,9 @@ jobs:
         MONGODB_TEST_URI: ${{secrets.MONGODB_TEST_URI}}
         NODE_ENV: test
         SERVER_PORT_TEST: 3334
-    - name: 'Deploy to Azure WebApp'
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+    - name: Deploy to Heroku
+      uses: AkhileshNS/heroku-deploy@v3.6.8
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "survey-app-arach"
+          heroku_email: "augstarachrafael@gmail.com"

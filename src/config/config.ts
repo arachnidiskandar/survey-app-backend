@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || 'localhost';
-const SERVER_PORT = process.env.NODE_ENV === 'test' ? process.env.SERVER_PORT_TEST : process.env.SERVER_PORT;
+const SERVER_PORT = process.env.NODE_ENV === 'test' ? process.env.PORT_TEST : process.env.PORT;
 
 const MONGO_OPTIONS = {
   useUnifiedTopology: true,
