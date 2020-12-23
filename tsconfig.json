@@ -23,6 +23,7 @@
       "@models/*": ["src/models/*"],
       "@interfaces/*": ["src/interfaces/*"],
       "@routes/*": ["src/routes/*"],
+      "@middlewares/*": ["src/middlewares/*"],
       "@config/*": ["src/config/*"]
     }
   },

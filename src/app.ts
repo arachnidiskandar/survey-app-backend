@@ -28,13 +28,12 @@ app.use((req, res, next) => {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// eslint-disable-next-line consistent-return
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   if (req.method === 'OPTIONS') {
     res.header('Access-Control-Allow-Methods', 'GET PATCH DELETE POST PUT');
-    return res.status(200).json({});
+    res.status(200).json({});
   }
   next();
 });
