@@ -1,10 +1,10 @@
-import express from 'express';
+import { Router } from 'express';
 import Joi from 'joi';
 
 import controller from '@controllers/survey';
 import validateBodyRequest from '@middlewares/bodyValidation';
 
-const surveyRoutes = express.Router();
+const surveyRoutes = Router();
 
 surveyRoutes.get('', controller.getAllSurveys);
 surveyRoutes.post(
