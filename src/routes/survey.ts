@@ -22,7 +22,7 @@ surveyRoutes.post(
     const surveySchema = Joi.object({
       title: Joi.string().required(),
       coordinator: Joi.required(),
-      questions: Joi.array().items(questionSchema),
+      questions: Joi.array().required().items(questionSchema).min(1),
       availableToAnyone: Joi.boolean().required(),
     });
     validateBodyRequest(surveySchema, req, res, next);
