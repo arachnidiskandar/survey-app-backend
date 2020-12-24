@@ -2,16 +2,16 @@ import mongoose, { Schema } from 'mongoose';
 
 import ISurvey from '@interfaces/survey';
 
-const QuestionSchema: Schema = new Schema({
+const questionSchema: Schema = new Schema({
   title: { type: String, required: true },
   questionType: { type: String, required: true },
   choices: [{ type: String }],
 });
-const SurveySchema: Schema = new Schema({
+const surveySchema: Schema = new Schema({
   title: { type: String, required: true },
   coordinator: { type: Number, required: true },
-  questions: [QuestionSchema],
+  questions: [questionSchema],
   availableToAnyone: { type: Boolean, required: true },
 });
 
-export default mongoose.model<ISurvey>('survey', SurveySchema);
+export default mongoose.model<ISurvey>('survey', surveySchema);
