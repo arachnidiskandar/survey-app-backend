@@ -2,6 +2,7 @@ import { Router } from 'express';
 import Joi from 'joi';
 
 import controller from '@controllers/survey';
+import verifyAuthorization from '@middlewares/authMiddleware';
 import validateBodyRequest from '@middlewares/bodyValidation';
 
 const surveyRoutes = Router();
@@ -9,6 +10,7 @@ const surveyRoutes = Router();
 surveyRoutes.get('', controller.getAllSurveys);
 surveyRoutes.post(
   '',
+  verifyAuthorization,
   (req, res, next) => {
     const questionSchema = Joi.object({
       title: Joi.string().required(),
@@ -29,6 +31,6 @@ surveyRoutes.post(
   },
   controller.createSurvey
 );
-surveyRoutes.delete('/:id', controller.deleteSurvey);
+surveyRoutes.delete('/:id', verifyAuthorization, controller.deleteSurvey);
 
 export default surveyRoutes;
