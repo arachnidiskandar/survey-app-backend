@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import mongoose from 'mongoose';
 
 import User from '@models/user';
 
@@ -10,31 +9,32 @@ const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: maxAge });
 };
 
-const signUp = (req: Request, res: Response): void => {
+const signUp = async (req: Request, res: Response): void => {
   const { name, password, email, coordinator } = req.body;
   const saltRounds = 10;
-  bcrypt.hash(password, saltRounds).then((hash) => {
-    const user = new User({
-      name,
-      password: hash,
-      email,
-      coordinator,
-    });
-    user
-      .save()
-      .then(() => {
-        const token = createToken(user._id);
-        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-        res.status(201).json({ user: user._id, email: user.email });
-      })
-      .catch((err) => {
-        if (err.errors?.email) {
-          res.status(200).json({ message: 'Email Already Exists' });
-        } else {
-          res.status(500).json({ message: err.message, err });
-        }
+  User.findOne({ email })
+    .exec()
+    .then(() => res.status(200).json({ message: 'Email already exists' }))
+    .catch(() => {
+      bcrypt.hash(password, saltRounds).then((hash) => {
+        const user = new User({
+          name,
+          password: hash,
+          email,
+          coordinator,
+        });
+        user
+          .save()
+          .then(() => {
+            const token = createToken(user._id);
+            res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+            res.status(201).json({ user: user._id, email: user.email });
+          })
+          .catch((err) => {
+            res.status(500).json({ message: err.message, err });
+          });
       });
-  });
+    });
 };
 const login = (req: Request, res: Response): void => {
   const { email, password } = req.body;

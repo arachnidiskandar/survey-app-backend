@@ -1,5 +1,4 @@
 import mongoose, { Schema } from 'mongoose';
-import uniqueValidator from 'mongoose-unique-validator';
 
 import IUser from '@interfaces/user';
 
@@ -10,5 +9,4 @@ const userSchema: Schema = new Schema({
   coordinator: { type: Boolean, required: true },
 });
 
-userSchema.plugin(uniqueValidator);
 export default mongoose.model<IUser>('user', userSchema);
