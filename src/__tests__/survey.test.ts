@@ -1,3 +1,4 @@
+import { NextFunction } from 'express';
 import mongoose from 'mongoose';
 import request from 'supertest';
 
@@ -7,14 +8,12 @@ import Survey from '@models/survey';
 
 import app from '../app';
 
+jest.mock('@middlewares/authMiddleware', () => jest.fn((req, res, next: NextFunction) => next()));
+
 describe('Test survey endpoint', () => {
   let correctSurvey;
   let incorrectSurvey;
   beforeEach(async (done) => {
-    mongoose
-      .connect(config.mongo.uri, config.mongo.options)
-      .then(done())
-      .catch((err) => console.log(err.message));
     correctSurvey = {
       title: 'Primeiro Formulário 2',
       coordinator: 1,
@@ -27,6 +26,10 @@ describe('Test survey endpoint', () => {
       ],
       availableToAnyone: true,
     };
+    mongoose
+      .connect(config.mongo.uri, config.mongo.options)
+      .then(done())
+      .catch((err) => console.log(err.message));
   });
   afterEach(async (done) => {
     await Survey.deleteMany({}).exec();
