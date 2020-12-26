@@ -4,6 +4,7 @@ import request from 'supertest';
 
 import config from '@config/config';
 import { QuestionType } from '@interfaces/survey';
+import authMiddleware from '@middlewares/authMiddleware';
 import Survey from '@models/survey';
 
 import app from '../app';
@@ -13,7 +14,9 @@ jest.mock('@middlewares/authMiddleware', () => jest.fn((req, res, next: NextFunc
 describe('Test survey endpoint', () => {
   let correctSurvey;
   let incorrectSurvey;
+
   beforeEach(async (done) => {
+    (authMiddleware as jest.Mock).mockImplementation((req, res, next) => next());
     correctSurvey = {
       title: 'Primeiro Formulário 2',
       coordinator: 1,
