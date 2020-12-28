@@ -13,7 +13,6 @@ const signUp = (req: Request, res: Response): void => {
   const { name, password, email, coordinator } = req.body;
   const saltRounds = 10;
   User.findOne({ email })
-    .exec()
     .then(() => res.status(200).json({ message: 'Email already exists' }))
     .catch(() => {
       bcrypt.hash(password, saltRounds).then((hash) => {
