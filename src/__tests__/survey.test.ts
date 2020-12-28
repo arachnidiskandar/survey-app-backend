@@ -1,4 +1,3 @@
-import { NextFunction } from 'express';
 import mongoose from 'mongoose';
 import request from 'supertest';
 
@@ -42,55 +41,6 @@ describe('Test survey endpoint', () => {
   afterAll(async (done) => {
     await mongoose.connection.close();
     done();
-  });
-
-  it('should return status code 201 on create survey', async (done) => {
-    const response = await request(app).post('/api/surveys').send(correctSurvey);
-    expect(response.status).toBe(201);
-    done();
-  });
-  it('should create new survey', async (done) => {
-    const response = await request(app).post('/api/surveys').send(correctSurvey);
-    expect(response.body).toMatchObject(correctSurvey);
-    done();
-  });
-  it('should return status code 204 on delete survey', async (done) => {
-    const id = mongoose.Types.ObjectId();
-    const survey = new Survey({
-      _id: id,
-      ...correctSurvey,
-    });
-    survey
-      .save()
-      .then(() => {
-        request(app)
-          .delete(`/api/surveys/${id.toHexString().toString()}`)
-          .then((res) => {
-            expect(res.status).toBe(204);
-            done();
-          });
-      })
-      .catch((err) => console.log(err));
-  });
-  it('should delete new survey', async (done) => {
-    const id = new mongoose.Types.ObjectId();
-    const survey = new Survey({
-      _id: id,
-      ...correctSurvey,
-    });
-    survey
-      .save()
-      .then(() => {
-        request(app)
-          .delete(`/api/surveys/${id.toHexString().toString()}`)
-          .then(async (res) => {
-            expect(res.body).toMatchObject({});
-            const deletedSurvey = await Survey.findById(id).exec();
-            expect(deletedSurvey).toBeFalsy();
-            done();
-          });
-      })
-      .catch((err) => console.log(err));
   });
 
   describe('shouldnt create survey with invalid props', () => {
@@ -192,5 +142,53 @@ describe('Test survey endpoint', () => {
       expect(response.status).toBe(400);
       done();
     });
+  });
+  it('should return status code 201 on create survey', async (done) => {
+    const response = await request(app).post('/api/surveys').send(correctSurvey);
+    expect(response.status).toBe(201);
+    done();
+  });
+  it('should create new survey', async (done) => {
+    const response = await request(app).post('/api/surveys').send(correctSurvey);
+    expect(response.body).toMatchObject(correctSurvey);
+    done();
+  });
+  it('should return status code 204 on delete survey', async (done) => {
+    const id = mongoose.Types.ObjectId();
+    const survey = new Survey({
+      _id: id,
+      ...correctSurvey,
+    });
+    survey
+      .save()
+      .then(() => {
+        request(app)
+          .delete(`/api/surveys/${id.toHexString().toString()}`)
+          .then((res) => {
+            expect(res.status).toBe(204);
+            done();
+          });
+      })
+      .catch((err) => console.log(err));
+  });
+  it('should delete new survey', async (done) => {
+    const id = new mongoose.Types.ObjectId();
+    const survey = new Survey({
+      _id: id,
+      ...correctSurvey,
+    });
+    survey
+      .save()
+      .then(() => {
+        request(app)
+          .delete(`/api/surveys/${id.toHexString().toString()}`)
+          .then(async (res) => {
+            expect(res.body).toMatchObject({});
+            const deletedSurvey = await Survey.findById(id).exec();
+            expect(deletedSurvey).toBeFalsy();
+            done();
+          });
+      })
+      .catch((err) => console.log(err));
   });
 });

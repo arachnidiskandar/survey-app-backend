@@ -3,13 +3,6 @@ import mongoose from 'mongoose';
 
 import Survey from '@models/survey';
 
-const getAllSurveys = (req: Request, res: Response): void => {
-  Survey.find()
-    .exec()
-    .then((results) => res.status(200).json({ surveys: results }))
-    .catch((error) => res.status(500).json({ message: error.message, error }));
-};
-
 const createSurvey = (req: Request, res: Response): void => {
   const { title, coordinator, questions, availableToAnyone } = req.body;
 
@@ -33,4 +26,4 @@ const deleteSurvey = (req: Request, res: Response): void => {
     .then(() => res.status(204).json({}))
     .catch((err) => res.status(500).json({ message: err.message, err }));
 };
-export default { getAllSurveys, createSurvey, deleteSurvey };
+export default { createSurvey, deleteSurvey };
