@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 import User from '@models/user';
 
-const verifyAuthorization = (req: Request, res: Response, next: NextFunction) => {
+const verifyAuthorization = (req: Request, res: Response, next: NextFunction): void => {
   const token = req.cookies.jwt;
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
