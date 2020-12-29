@@ -13,27 +13,31 @@ const signUp = (req: Request, res: Response): void => {
   const { name, password, email, coordinator } = req.body;
   const saltRounds = 10;
   User.findOne({ email })
-    .then(() => res.status(200).json({ message: 'Email already exists' }))
-    .catch(() => {
-      bcrypt.hash(password, saltRounds).then((hash) => {
-        const user = new User({
-          name,
-          password: hash,
-          email,
-          coordinator,
-        });
-        user
-          .save()
-          .then(() => {
-            const token = createToken(user._id);
-            res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-            res.status(201).json({ user: user._id, email: user.email });
-          })
-          .catch((err) => {
-            res.status(500).json({ message: err.message, err });
+    .then((userExists) => {
+      if (userExists) {
+        res.status(200).json({ message: 'Email Already Exists' });
+      } else {
+        bcrypt.hash(password, saltRounds).then((hash) => {
+          const user = new User({
+            name,
+            password: hash,
+            email,
+            coordinator,
           });
-      });
-    });
+          user
+            .save()
+            .then(() => {
+              const token = createToken(user._id);
+              res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+              res.status(201).json({ user: user._id, email: user.email });
+            })
+            .catch((err) => {
+              res.status(500).json({ message: err.message, err });
+            });
+        });
+      }
+    })
+    .catch((err) => res.status(500).json({ message: err.message, err }));
 };
 const login = (req: Request, res: Response): void => {
   const { email, password } = req.body;
